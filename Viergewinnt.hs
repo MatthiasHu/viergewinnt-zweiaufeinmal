@@ -8,7 +8,7 @@ module Viergewinnt
   ) where
 
 
-data Color = Red | Blue
+data Color = Red | Blue deriving (Eq)
 
 otherColor :: Color -> Color
 
