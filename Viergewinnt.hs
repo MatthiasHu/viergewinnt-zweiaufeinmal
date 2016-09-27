@@ -11,6 +11,7 @@ module Viergewinnt
 import Data.Array
 import Data.Maybe (fromJust)
 import Data.List (intersperse)
+import Data.Maybe (catMaybes)
 
 
 data Color = Red | Blue
@@ -51,9 +52,10 @@ valid :: Game -> Bool
 valid g =
   let (l, r) = bounds (heights g)
       ((l', b), (r', t)) = bounds (slots g)
-  in l==l' && r==r' -- TODO: more invariants
+  in l==0 && b==0 && l==l' && r==r' -- TODO: more invariants
 
-data Result = Win Color | Draw deriving (Eq)
+data Result = Win Color | Draw
+  deriving (Eq, Ord, Show)
 
 
 dropPiece :: Color -> Int -> Game -> Game
@@ -68,8 +70,23 @@ dropPiece c x g =
            else oldH // [(x, hx+1)]
     newS = oldS // [((x, hx), Just c)]
 
+legalDrop :: Int -> Game -> Bool
+legalDrop x g = (heights g ! x) <= (snd . snd . bounds . slots $ g)
+
 moves :: Game -> Color -> [Game]
-moves = undefined
+moves g c = if null outcomes then [g]
+            else outcomes
+  where
+    choices :: [[Int]] -- list of pairs
+    choices = [ [x1, x2] | x1 <- [0..w], x2 <- [x1..w] ]
+    w = fst . snd . bounds . slots $ g
+    outcomes = catMaybes $ [ outcome xs g | xs <- choices ]
+    outcome :: [Int] -> Game -> Maybe Game -- drop multiple pieces if possible
+    outcome [] g' = Just g'
+    outcome (x:xs) g' =
+      if legalDrop x g' then outcome xs (dropPiece c x g')
+      else Nothing
+
 
 check :: Game -> Maybe Result
 check state = let 
