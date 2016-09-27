@@ -32,14 +32,14 @@ startPosition width height = Game
     [ ((x, y), Nothing) | x <- [0..width-1], y <- [0..height-1] ] )
 
 instance Show Game where
-  show g = unlines $ [ line (h-i) | i<-[0..h-1] ] ++ [replicate (2*w+1) '-']
+  show g = unlines $ [ line (h-i) | i<-[0..h] ] ++ [replicate (2*w+1) '-']
     where
       s = slots g
       w = fst . snd . bounds $ s
       h = snd . snd . bounds $ s
       line y =
         '|' :
-        intersperse ' ' [ colorChar (s ! (x, y)) | x <- [0..w-1] ]
+        intersperse ' ' [ colorChar (s ! (x, y)) | x <- [0..w] ]
         ++ "|"
       colorChar :: Maybe Color -> Char
       colorChar Nothing = ' '
@@ -55,6 +55,18 @@ valid g =
 
 data Result = Win Color | Draw deriving (Eq)
 
+
+dropPiece :: Color -> Int -> Game -> Game
+dropPiece c x g =
+  g { slots = newS, heights = newH }
+  where
+    oldS = slots g
+    oldH = heights g
+    hx = oldH ! x
+    h = snd . snd . bounds $ oldS
+    newH = if hx>h then error "dropping in full column"
+           else oldH // [(x, hx+1)]
+    newS = oldS // [((x, hx), Just c)]
 
 moves :: Game -> Color -> [Game]
 moves = undefined
