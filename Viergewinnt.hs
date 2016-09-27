@@ -10,7 +10,7 @@ module Viergewinnt
 import Data.Array
 
 
-data Color = Red | Blue
+data Color = Red | Blue deriving (Eq)
 
 otherColor :: Color -> Color
 otherColor Red = Blue
