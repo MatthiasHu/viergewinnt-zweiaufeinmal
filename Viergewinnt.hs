@@ -11,9 +11,8 @@ module Viergewinnt
   ) where
 
 import Data.Array
-import Data.Maybe (fromJust)
+import Data.Maybe (fromJust, catMaybes)
 import Data.List (intersperse)
-import Data.Maybe (catMaybes)
 
 
 data Color = Red | Blue
