@@ -18,7 +18,7 @@ otherColor Blue = Red
 
 data Game = Game
   { heights :: Array Int Int
-  , slots   :: Array (Int, Int) Color
+  , slots   :: Array (Int, Int) (Maybe Color)
   }
 
 valid :: Game -> Bool
