@@ -6,6 +6,7 @@ module Viergewinnt
   , moves
   , check
   , startPosition
+  , putziPosition
   ) where
 
 import Data.Array
