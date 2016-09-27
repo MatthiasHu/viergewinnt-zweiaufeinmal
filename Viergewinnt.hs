@@ -9,10 +9,12 @@ module Viergewinnt
   ) where
 
 import Data.Array
-import Data.Maybe
+import Data.Maybe (fromJust)
+import Data.List (intersperse)
 
 
-data Color = Red | Blue deriving (Eq)
+data Color = Red | Blue
+  deriving (Eq, Ord, Show)
 
 otherColor :: Color -> Color
 otherColor Red = Blue
@@ -24,10 +26,26 @@ data Game = Game
   }
 
 startPosition :: Int -> Int -> Game
-startPosition width height = undefined --Game
---  (array (0, width-1) [ 0 | x <- [0..width-1] ])
---  (array ((0, 0), (width-1, height-1))
---    [ Nothing | x <- [0..width-1], y <- [0..height-1] ] )
+startPosition width height = Game
+  (array (0, width-1) [ (x, 0) | x <- [0..width-1] ])
+  (array ((0, 0), (width-1, height-1))
+    [ ((x, y), Nothing) | x <- [0..width-1], y <- [0..height-1] ] )
+
+instance Show Game where
+  show g = unlines $ [ line (h-i) | i<-[0..h-1] ] ++ [replicate (2*w+1) '-']
+    where
+      s = slots g
+      w = fst . snd . bounds $ s
+      h = snd . snd . bounds $ s
+      line y =
+        '|' :
+        intersperse ' ' [ colorChar (s ! (x, y)) | x <- [0..w-1] ]
+        ++ "|"
+      colorChar :: Maybe Color -> Char
+      colorChar Nothing = ' '
+      colorChar (Just Red) = 'X'
+      colorChar (Just Blue) = 'O'
+
 
 valid :: Game -> Bool
 valid g =
