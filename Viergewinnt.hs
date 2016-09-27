@@ -64,7 +64,7 @@ valid g =
   in l==0 && b==0 && l==l' && r==r' -- TODO: more invariants
 
 data Result = Win Color | Draw
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 
 dropPiece :: Color -> Int -> Game -> Game
