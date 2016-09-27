@@ -62,10 +62,10 @@ moves = undefined
 check :: Game -> Maybe Result
 check state = let 
 	((left,lower),(right,upper)) = bounds (slots state)
-	verts = [[(i,j+k) | k<-[0..3]] | j<-[lower..upper-4],i<- [left..right]]
-	hors = [[(i+k,j)| k<-[0..3]] | i<- [left..right-4],j<-[lower..upper]]
-	diags = [[(i+k,j+k)|k<-[0..3]] | i<-[left..right-4],j<-[lower..upper-4]]
-	antis = [[(i+k,j-k)|k<-[0..3]] | i<-[left..right-4],j<-[lower+4..upper]]
+	verts = [[(i,j+k) | k<-[0..3]] | j<-[lower..upper-3],i<- [left..right]]
+	hors = [[(i+k,j)| k<-[0..3]] | i<- [left..right-3],j<-[lower..upper]]
+	diags = [[(i+k,j+k)|k<-[0..3]] | i<-[left..right-3],j<-[lower..upper-3]]
+	antis = [[(i+k,j-k)|k<-[0..3]] | i<-[left..right-3],j<-[lower+3..upper]]
 	fours = verts ++hors ++ diags ++ antis
 	checkfour on four = if all (== head x) x then head x else Nothing where 
 		x = map (on !) four
