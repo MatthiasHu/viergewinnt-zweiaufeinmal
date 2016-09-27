@@ -34,7 +34,7 @@ valid g =
       ((l', b), (r', t)) = bounds (slots g)
   in l==l' && r==r' -- TODO: more invariants
 
-data Result = Win Color | Draw
+data Result = Win Color | Draw deriving (Eq)
 
 
 moves :: Game -> Color -> [Game]
