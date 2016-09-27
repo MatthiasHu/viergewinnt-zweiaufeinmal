@@ -11,7 +11,8 @@ module Viergewinnt
 import Data.Array
 
 
-data Color = Red | Blue deriving (Eq)
+data Color = Red | Blue
+  deriving (Eq, Ord, Show)
 
 otherColor :: Color -> Color
 otherColor Red = Blue
@@ -23,10 +24,16 @@ data Game = Game
   }
 
 startPosition :: Int -> Int -> Game
-startPosition width height = undefined Game
+startPosition width height = Game
   (array (0, width-1) [ (x, 0) | x <- [0..width-1] ])
   (array ((0, 0), (width-1, height-1))
     [ ((x, y), Nothing) | x <- [0..width-1], y <- [0..height-1] ] )
+
+instance Show Game where
+  show g =
+    let w = fst . snd . bounds . slots $ g
+        h = snd . snd . bounds . slots $ g
+    in show $ slots g
 
 valid :: Game -> Bool
 valid g =
