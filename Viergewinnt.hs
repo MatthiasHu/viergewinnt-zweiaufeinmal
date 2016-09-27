@@ -1,13 +1,20 @@
 module Viergewinnt 
   ( Game
   , Color(..)
+  , Result(..)
+  , otherColor
   , moves
-  , winner
+  , check
   ) where
 
 
 data Color = Red | Blue
 
-moves :: Game -> [Game]
+otherColor :: Color -> Color
 
-winner :: Game -> Maybe Color
+data Result = Win Color | draw
+
+
+moves :: Game -> Color -> [Game]
+
+check :: Game -> Maybe Result
