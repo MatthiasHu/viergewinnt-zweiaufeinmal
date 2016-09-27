@@ -32,6 +32,13 @@ startPosition width height = Game
   (array ((0, 0), (width-1, height-1))
     [ ((x, y), Nothing) | x <- [0..width-1], y <- [0..height-1] ] )
 
+
+putziPosition = foldr (uncurry dropPiece) (startPosition 7 7) m where
+	m = reverse [(Red,1),(Blue,1),(Red,2),(Blue,3),(Blue,3),(Blue,3),
+		(Red,3),(Blue,3),(Blue,4),(Red,4),(Red,4),(Blue,4),
+		(Red,5),(Blue,5),(Blue,5),(Red,5),(Red,5),(Blue,5),
+		(Red,6),(Red,6),(Blue,6)]
+
 instance Show Game where
   show g = unlines $ [ line (h-i) | i<-[0..h] ] ++ [replicate (2*w+1) '-']
     where
