@@ -42,7 +42,8 @@ putziPosition = foldr (uncurry dropPiece) (startPosition 7 7) m where
 		(Red,6),(Red,6),(Blue,6)]
 
 instance Show Game where
-  show g = unlines $ [ line (h-i) | i<-[0..h] ] ++ [replicate (2*w+1) '-']
+  show g = "\n" ++ unlines
+    ( [ line (h-i) | i<-[0..h] ] ++ [replicate (2*w+3) '-'] )
     where
       s = slots g
       w = fst . snd . bounds $ s
