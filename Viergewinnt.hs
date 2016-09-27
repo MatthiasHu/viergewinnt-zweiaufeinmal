@@ -9,6 +9,7 @@ module Viergewinnt
   ) where
 
 import Data.Array
+import Data.List (intersperse)
 
 
 data Color = Red | Blue
@@ -30,10 +31,20 @@ startPosition width height = Game
     [ ((x, y), Nothing) | x <- [0..width-1], y <- [0..height-1] ] )
 
 instance Show Game where
-  show g =
-    let w = fst . snd . bounds . slots $ g
-        h = snd . snd . bounds . slots $ g
-    in show $ slots g
+  show g = unlines $ [ line (h-i) | i<-[0..h-1] ] ++ [replicate (2*w+1) '-']
+    where
+      s = slots g
+      w = fst . snd . bounds $ s
+      h = snd . snd . bounds $ s
+      line y =
+        '|' :
+        intersperse ' ' [ colorChar (s ! (x, y)) | x <- [0..w-1] ]
+        ++ "|"
+      colorChar :: Maybe Color -> Char
+      colorChar Nothing = ' '
+      colorChar (Just Red) = 'X'
+      colorChar (Just Blue) = 'O'
+
 
 valid :: Game -> Bool
 valid g =
