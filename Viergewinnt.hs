@@ -5,6 +5,7 @@ module Viergewinnt
   , otherColor
   , moves
   , check
+  , startPosition
   ) where
 
 import Data.Array
@@ -20,6 +21,12 @@ data Game = Game
   { heights :: Array Int Int
   , slots   :: Array (Int, Int) (Maybe Color)
   }
+
+startPosition :: Int -> Int -> Game
+startPosition width height = undefined --Game
+--  (array (0, width-1) [ 0 | x <- [0..width-1] ])
+--  (array ((0, 0), (width-1, height-1))
+--    [ Nothing | x <- [0..width-1], y <- [0..height-1] ] )
 
 valid :: Game -> Bool
 valid g =
